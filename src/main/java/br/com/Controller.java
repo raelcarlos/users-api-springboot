@@ -1,9 +1,12 @@
 package br.com;
 
 import com.google.gson.Gson;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,21 +17,16 @@ public class Controller {
     @Autowired
     private ItemRepository repository;
 
-
     @Autowired
     private MongoTemplate mongoTemplate;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String findAll() {
         StringBuilder s = new StringBuilder();
-        System.out.println("A");
         List<Item> itens = repository.findAll();
-        System.out.println("B");
         for (Item item : itens) {
-            System.out.println("C");
             s.append(item.toString());
         }
-        System.out.println("D");
         return s.toString();
     }
 
@@ -47,10 +45,10 @@ public class Controller {
         return ResponseEntity.ok(gson.toJson(result));
     }
 
-    /*@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteById(@PathVariable String id){
-        //DeleteResult result = mongoTemplate.remove(new Query(Criteria.where("_id").is(id)), Item.class);
+        DeleteResult result = mongoTemplate.remove(new Query(Criteria.where("_id").is(id)), Item.class);
         Gson gson = new Gson();
         return ResponseEntity.ok(gson.toJson(result));
-    }*/
+    }
 }
