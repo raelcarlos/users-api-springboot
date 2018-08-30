@@ -1,0 +1,7 @@
+#mongodb
+spring:
+  profiles:
+    active: dev
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
